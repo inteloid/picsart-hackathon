@@ -18,9 +18,14 @@ def on_pin1(*args):
 def on_pin2(*args):
 	print(args)
 
+def on_audio(*args):
+	file = args[0]['file]
+
+
 socketIO = SocketIO('fra-cluster2', 3300, LoggingNamespace)
 socketIO.on('gauge', on_gauge)
 socketIO.on('pin1', on_pin1)
 socketIO.on('pin2', on_pin2)
+socketIO.on('audio', on_audio)
 socketIO.wait(seconds=1000)
 GPIO.cleanup()
