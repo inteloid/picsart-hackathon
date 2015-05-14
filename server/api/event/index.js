@@ -6,7 +6,7 @@ var controller = require('./event.controller');
 
 var router = express.Router();
 
-router.get('/events/selected', controller.selected);
-router.post('/events', controller.add);
+router.get('/', controller.index);
+router.post('/', controller.add);
 
 module.exports = router;

@@ -40,14 +40,9 @@ angular.module('adminYoApp')
     $scope.currentEvent.filter = "version";
 
     $scope.sendInfo = function(){
-      if(!$scope.selected) {
-        return;
+      if($scope.currentEvent.type && $scope.currentEvent.filter) {
+        $http.post('/api/event', { data: $scope.currentEvent });
       }
-      $http.post('/events', { data: $scope.currentEvent });
     };
-
-    $http.get('/events/selected').success(function(se) {
-      $scope.selected = se;
-    });
 
 }]);
