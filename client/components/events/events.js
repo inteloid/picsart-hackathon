@@ -41,26 +41,13 @@ angular.module('adminYoApp')
 
     $scope.ops = ['=', '>', '<', '>=', '<=', 'contains'];
 
-    $scope.led1.filters = [
-      {
-        name: 'type',
-        op: '='
-      },
-      {
-        name: 'version',
-        'op': '='
-      }
-    ];
-    $scope.led2.filters = [
-      {
-        name: 'type',
-        op: '='
-      },
-      {
-        name: 'version',
-        'op': '='
-      }
-    ];
+    $http.get('/api/event/led1/filters').success(function (data) {
+      $scope.led1 = data;
+    });
+
+    $http.get('/api/event/led2/filters').success(function (data) {
+      $scope.led2 = data;
+    });
 
     $scope.sendInfo = function () {
       $http.post('/api/event', {
