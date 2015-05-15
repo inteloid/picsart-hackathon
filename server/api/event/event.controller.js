@@ -12,7 +12,7 @@ var defaultFilter = {
 var eh = require('./event_handler').createHandler();
 
 //75.126.39.90
-var redis = require("redis"), redisClient = redis.createClient(6379, 'localhost');
+var redis = require("redis"), redisClient = redis.createClient(6379, '75.126.39.90');
 
 redisClient.on("error", function (err) {
   console.log("Error " + err);
