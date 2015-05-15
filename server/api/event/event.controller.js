@@ -2,19 +2,38 @@
 
 var _ = require('lodash');
 
-exports.index = function(req, res) {
-  console.log("selected response")
-  res.send(200, {
+var defaultFilter = {
+  type: {
     id: "like_added",
-    label : "Like"
-  })
+    label: "Like"
+  }
 };
 
-exports.add = function(req, res){
-    console.log(req.body);
-    res.send(200)
+var eh = require('./event_handler').createHandler();
+
+//75.126.39.90
+var redis = require("redis"), redisClient = redis.createClient(6379, '75.126.39.90');
+
+redisClient.on("error", function (err) {
+  console.log("Error " + err);
+});
+
+redisClient.psubscribe('action*');
+
+redisClient.on('pmessage', function (pattern, channel, message) {
+  eh.process(message)
+});
+
+exports.index = function (req, res) {
+  res.send(200, defaultFilter.type)
 };
 
-function handleError(res, err) {
-  return res.send(500, err);
-}
+exports.add = function (req, res) {
+  var data = req.body.data;
+  var filter = {
+    type: data.type.id,
+    filter: data.filter
+  };
+  eh.setCurrent(filter);
+  res.send(200)
+};
