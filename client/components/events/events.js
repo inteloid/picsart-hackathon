@@ -56,4 +56,25 @@ angular.module('adminYoApp')
       });
     };
 
+  }])
+  .controller('AlertController', ['$scope', '$http', function ($scope, $http) {
+
+    $http.get('/api/event/alerts').success(function (data) {
+      $scope.alerts = data;
+    });
+
+
+    $scope.save = function () {
+      $http.post('/api/event/alerts', $scope.alerts)
+    };
+
+    $scope.addAlert = function () {
+      $scope.alerts.push({condition: {}})
+    };
+
+    $scope.remove = function (alert) {
+      var index = $scope.alerts.indexOf(alert);
+      $scope.alerts.splice(index, 1);
+    }
+
   }]);

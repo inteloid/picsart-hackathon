@@ -10,6 +10,8 @@ router.get('/', controller.index);
 router.post('/', controller.add);
 router.get('/led1/filters', controller.led1Filters);
 router.get('/led2/filters', controller.led2Filters);
+router.get('/alerts', controller.findAllAlerts);
+router.post('/alerts', controller.saveAllerts);
 
 
 module.exports = router;

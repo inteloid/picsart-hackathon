@@ -59,6 +59,17 @@ exports.led2Filters = function (req, res) {
   res.send(200, defLed2)
 };
 
+exports.findAllAlerts = function (req, res) {
+  var alerts = [];
+  res.send(200, alerts)
+};
+
+exports.saveAllerts = function (req, res) {
+  var alerts = req.body;
+
+  res.send(200);
+};
+
 exports.add = function (req, res) {
   var data = req.body;
   eh.setLed1(data.led1);
