@@ -11,7 +11,7 @@ router.post('/', controller.add);
 router.get('/led1/filters', controller.led1Filters);
 router.get('/led2/filters', controller.led2Filters);
 router.get('/alerts', controller.findAllAlerts);
-router.post('/alerts', controller.saveAllerts);
+router.post('/alerts', controller.saveAlerts);
 
 
 module.exports = router;

@@ -1,5 +1,5 @@
 angular.module('adminYoApp')
-  .factory('Event', function ($rootScope, $modal) {
+  .factory('Event', function ($rootScope) {
     return {
       findAll: function () {
         return [

@@ -31,11 +31,15 @@ var defLed2 = {
   ]
 };
 
-var eh = require('./event_handler').createHandler();
+var io = require('socket.io')(3300);
+
+var eh = require('./event_handler').createHandler(io);
 eh.setLed1(defLed1);
 eh.setLed2(defLed2);
 //75.126.39.90
 var redis = require("redis"), redisClient = redis.createClient(6379, 'localhost');
+
+var alerter = require('./alerter').createAlerter(io);
 
 redisClient.on("error", function (err) {
   console.log("Error " + err);
@@ -44,7 +48,8 @@ redisClient.on("error", function (err) {
 redisClient.psubscribe('action*');
 
 redisClient.on('pmessage', function (pattern, channel, message) {
-  eh.process(message)
+  eh.process(message);
+  alerter.incrementCounter(message);
 });
 
 exports.index = function (req, res) {
@@ -64,9 +69,9 @@ exports.findAllAlerts = function (req, res) {
   res.send(200, alerts)
 };
 
-exports.saveAllerts = function (req, res) {
-  var alerts = req.body;
-
+exports.saveAlerts = function (req, res) {
+  alerter.setAlerts(req.body);
+  alerter.check();
   res.send(200);
 };
 

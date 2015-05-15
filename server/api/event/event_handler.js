@@ -1,7 +1,5 @@
-var io = require('socket.io')(3300);
-
-function EventHandler() {
-
+function EventHandler(io) {
+  this.io = io;
 }
 
 EventHandler.prototype = {
@@ -51,13 +49,13 @@ EventHandler.prototype = {
 
   doPin: function (message, socketChannel, led) {
     if (this.filterEvent(message, led.filters)) {
-      io.emit(socketChannel, {});
+      this.io.emit(socketChannel, {});
     }
   }
 };
 
 exports.EventHandler = EventHandler;
 
-exports.createHandler = function () {
-  return new EventHandler();
+exports.createHandler = function (io) {
+  return new EventHandler(io);
 };
