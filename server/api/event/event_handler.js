@@ -21,27 +21,28 @@ EventHandler.prototype = {
 
   filterEvent: function (message, filters) {
     var event = JSON.parse(message);
-    var match = false;
+    var match = true;
     filters.forEach(function (filter) {
       switch (filter.op) {
         case '=' :
-          match = event[filter.name] == filter.value;
+          match = match && event[filter.name] == filter.value;
           break;
         case '>' :
-          match = event[filter.name] > filter.value;
+          match = match && event[filter.name] > filter.value;
           break;
         case '<' :
-          match = event[filter.name] < filter.value;
+          match = match && event[filter.name] < filter.value;
           break;
         case '>=' :
-          match = event[filter.name] >= filter.value;
+          match = match && event[filter.name] >= filter.value;
           break;
         case '<=' :
-          match = event[filter.name] <= filter.value;
+          match = match && event[filter.name] <= filter.value;
           break;
         case 'contains' :
           var pattern = new RegExp(filter.value);
           match = pattern.test(event[filter.name].toString());
+          break;
       }
     });
     return match;

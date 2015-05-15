@@ -25,7 +25,8 @@ var defLed2 = {
     },
     {
       name: 'country',
-      op: '='
+      op: 'contains',
+      value: 'armenia'
     }
   ]
 };
