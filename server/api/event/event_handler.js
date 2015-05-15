@@ -5,26 +5,31 @@ function EventHandler() {
 
 EventHandler.prototype = {
 
-  setCurrent: function (c) {
-    this.current = c;
+  setLed1: function (c) {
+    this.led1 = c;
+  },
+
+  setLed2: function (c) {
+    this.led2 = c;
   },
 
   process: function (message) {
-    this.doPin(message, "pin1")
+    this.doPin(message, "pin1", this.led1);
+    this.doPin(message, "pin1", this.led2)
   },
 
-  doPin: function (message, socketChannel) {
-    if (this.current && message) {
+  doPin: function (message, socketChannel, led) {
+    if (led.filter && message) {
       var msgObj = JSON.parse(message);
-      var filterEventType = this.current.type;
-      var filterProp = this.current.filter;
+      var filterEventType = led.filter['type'].id;
+      var filterProp = led.filter.prop;
 
       if (filterEventType && filterProp) {
-        if (filterEventType == msgObj.filter && msgObj.type == filterProp) {
+        if (filterEventType == msgObj['type'] && msgObj[filterProp.name] == filterProp.value) {
           io.emit(socketChannel, {});
         }
       } else if (filterEventType) {
-        if (filterEventType == msgObj.filter) {
+        if (filterEventType == msgObj['type']) {
           io.emit(socketChannel, {});
         }
       } else {

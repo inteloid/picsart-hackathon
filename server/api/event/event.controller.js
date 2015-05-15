@@ -12,7 +12,7 @@ var defaultFilter = {
 var eh = require('./event_handler').createHandler();
 
 //75.126.39.90
-var redis = require("redis"), redisClient = redis.createClient(6379, '75.126.39.90');
+var redis = require("redis"), redisClient = redis.createClient(6379, 'localhost');
 
 redisClient.on("error", function (err) {
   console.log("Error " + err);
@@ -29,11 +29,8 @@ exports.index = function (req, res) {
 };
 
 exports.add = function (req, res) {
-  var data = req.body.data;
-  var filter = {
-    type: data.type.id,
-    filter: data.filter
-  };
-  eh.setCurrent(filter);
+  var data = req.body;
+  eh.setLed1(data.led1);
+  eh.setLed2(data.led2);
   res.send(200)
 };
