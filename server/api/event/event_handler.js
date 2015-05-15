@@ -1,6 +1,7 @@
 var io = require('socket.io')(3300);
 
 function EventHandler() {
+
 }
 
 EventHandler.prototype = {
@@ -15,7 +16,7 @@ EventHandler.prototype = {
 
   process: function (message) {
     this.doPin(message, "pin1", this.led1);
-    this.doPin(message, "pin1", this.led2)
+    this.doPin(message, "pin2", this.led2)
   },
 
   filterEvent: function (message, filters) {
