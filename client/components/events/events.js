@@ -4,6 +4,10 @@ angular.module('adminYoApp')
       findAll: function () {
         return [
           {
+            id: "user_added",
+            label: "User Registration"
+          },
+          {
             id: "photo_upload",
             label: "Photo Upload"
           },
@@ -12,16 +16,16 @@ angular.module('adminYoApp')
             label: "Like"
           },
           {
-            id: "effect_apply",
-            label: "Effect Apply"
+            id: "following_added",
+            label: "Following"
           },
           {
-            id: "app_install",
-            label: "Application Installed"
+            id: "comment_added",
+            label: "Comment"
           },
           {
-            id: "user_added",
-            label: "User Registration"
+            id: "stream_added",
+            label: "Stream Added"
           }
         ]
       }
@@ -31,9 +35,32 @@ angular.module('adminYoApp')
 angular.module('adminYoApp')
   .controller('EventController', ['$scope', '$http', 'Event', function ($scope, $http, Event) {
     $scope.events = Event.findAll();
-    $scope.filters = ["platform", "version"];
+    $scope.filters = ["platform", "version", "country"];
     $scope.led1 = {};
     $scope.led2 = {};
+
+    $scope.ops = ['=', '>', '<', '>=', '<=', 'contains'];
+
+    $scope.led1.filters = [
+      {
+        name: 'type',
+        op: '='
+      },
+      {
+        name: 'version',
+        'op': '='
+      }
+    ];
+    $scope.led2.filters = [
+      {
+        name: 'type',
+        op: '='
+      },
+      {
+        name: 'version',
+        'op': '='
+      }
+    ];
 
     $scope.sendInfo = function () {
       $http.post('/api/event', {

@@ -18,24 +18,38 @@ EventHandler.prototype = {
     this.doPin(message, "pin1", this.led2)
   },
 
-  doPin: function (message, socketChannel, led) {
-    if (led.filter && message) {
-      var msgObj = JSON.parse(message);
-      var filterEventType = led.filter['type'].id;
-      var filterProp = led.filter.prop;
-
-      if (filterEventType && filterProp) {
-        if (filterEventType == msgObj['type'] && msgObj[filterProp.name] == filterProp.value) {
-          io.emit(socketChannel, {});
-        }
-      } else if (filterEventType) {
-        if (filterEventType == msgObj['type']) {
-          io.emit(socketChannel, {});
-        }
-      } else {
-        io.emit(socketChannel, {});
+  filterEvent: function (message, filters) {
+    var event = JSON.parse(message);
+    var match = false;
+    filters.forEach(function (filter) {
+      switch (filter.op) {
+        case '=' :
+          match = event[filter.name] == filter.value;
+          break;
+        case '>' :
+          match = event[filter.name] > filter.value;
+          break;
+        case '<' :
+          match = event[filter.name] < filter.value;
+          break;
+        case '>=' :
+          match = event[filter.name] >= filter.value;
+          break;
+        case '<=' :
+          match = event[filter.name] <= filter.value;
+          break;
+        case 'contains' :
+          var pattern = new RegExp(filter.value);
+          match = pattern.test(event[filter.name]);
       }
+    });
+    return match;
+  },
 
+
+  doPin: function (message, socketChannel, led) {
+    if (this.filterEvent(message, led.filters)) {
+      io.emit(socketChannel, {});
     }
   }
 };
