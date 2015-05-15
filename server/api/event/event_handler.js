@@ -40,7 +40,7 @@ EventHandler.prototype = {
           break;
         case 'contains' :
           var pattern = new RegExp(filter.value);
-          match = pattern.test(event[filter.name]);
+          match = pattern.test(event[filter.name].toString());
       }
     });
     return match;
